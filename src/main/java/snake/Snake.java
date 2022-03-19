@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 
 public class Snake extends Application {
   static boolean gameOver = false;
-  static boolean immortal_mode = false;
   static int width = 80;
   static int height = 50;
   static int box_Size = 20;
@@ -186,6 +185,7 @@ public class Snake extends Application {
         if (kc == KeyCode.ESCAPE)
           Paused = !Paused;
         if (kc == KeyCode.SPACE && gameOver) {
+          Paused = true;
           timer.stop();
           stage.close();
           init(new Stage());
@@ -229,7 +229,7 @@ public class Snake extends Application {
     for (int i = 1; i < snake.size(); i++) {
       snake_part = snake.get(i);
       if (snake_head.x == snake_part.x && snake_head.y == snake_part.y) {
-        gc.fillText(snake_head.x +  ":" + snake_head.y + " => " + snake_part.x + ":" + snake_part.y, 100, 100 );
+        // gc.fillText(snake_head.x +  ":" + snake_head.y + " => " + snake_part.x + ":" + snake_part.y, 100, 100 );
         gameOver = true;
       }
     }
@@ -247,19 +247,19 @@ public class Snake extends Application {
     // position of the head
     //
 
-    gameOver = (direction == Dir.up && (snake_head.y-- < 0)
-        || direction == Dir.down && (snake_head.y++ >= height)
-        || direction == Dir.left && (snake_head.x-- < 0)
-        || direction == Dir.right && (snake_head.x++ >= width)
+    gameOver = (direction == Dir.up && (--snake_head.y < 0)
+        || direction == Dir.down && (++snake_head.y >= height)
+        || direction == Dir.left && (--snake_head.x < 0)
+        || direction == Dir.right && (++snake_head.x >= width)
         || gameOver);
 
-    try {
-      // This is to avoid this dumb bug that makes the snake change directions twice
-      // on the same frame. Resulting in game over
-      Thread.sleep(30);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    // try {
+    //   // This is to avoid this dumb bug that makes the snake change directions twice
+    //   // on the same frame. Resulting in game over
+    //   Thread.sleep(30);
+    // } catch (InterruptedException e) {
+    //   e.printStackTrace();
+    // }
 
     // Update the position of the snake
     // if (direction == Dir.up) --snake_head.y;
@@ -318,7 +318,7 @@ public class Snake extends Application {
     gc.setFont(new Font("", 20));
     gc.fillText("Score: " + current_score, 10, 20);
     gc.fillText("High Score: " + high_score, 10, 40);
-    gc.fillText("Head: " + snake.get(0).x + ":" + snake.get(0).y, 10, 60);
+    // gc.fillText("Head: " + snake.get(0).x + ":" + snake.get(0).y, 10, 60);
 
 
     try {
